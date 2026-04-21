@@ -1,16 +1,29 @@
 class Solution {
-    public int maxProfit(int[] prices) {
-        int minPrice = Integer.MAX_VALUE;
-        int maxProfit = 0;
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
 
-        for (int price : prices) {
-            if (price < minPrice) {
-                minPrice = price;        // best buying price so far
-            } else {
-                maxProfit = Math.max(maxProfit, price - minPrice);
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Step 1: Detect cycle
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                // Step 2: Find cycle start
+                ListNode entry = head;
+                while (entry != slow) {
+                    entry = entry.next;
+                    slow = slow.next;
+                }
+                return entry;
             }
         }
 
-        return maxProfit;
+        // No cycle
+        return null;
     }
 }

@@ -1,21 +1,38 @@
-import java.util.HashMap;
-import java.util.Map;
-
 class Solution {
-    public boolean containsNearbyDuplicate(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
 
-        for (int i = 0; i < nums.length; i++) {
-            if (map.containsKey(nums[i])) {
-                int lastIndex = map.get(nums[i]);
-                if (i - lastIndex <= k) {
-                    return true;
-                }
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode secondHalf = reverseList(slow);
+        ListNode firstHalf = head;
+        while (secondHalf != null) {
+            if (firstHalf.val != secondHalf.val) {
+                return false;
             }
-            // Update the last seen index
-            map.put(nums[i], i);
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
         }
 
-        return false;
+        return true;
+    }
+    private ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+
+        while (curr != null) {
+            ListNode nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+
+        return prev;
     }
 }

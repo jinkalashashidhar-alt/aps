@@ -1,24 +1,21 @@
 class Solution {
-    public int[] getSumAbsoluteDifferences(int[] nums) {
-        int n = nums.length;
-        int[] result = new int[n];
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(-1);
+        ListNode current = dummy;
 
-        // Prefix sum array
-        int[] prefix = new int[n];
-        prefix[0] = nums[0];
-
-        for (int i = 1; i < n; i++) {
-            prefix[i] = prefix[i - 1] + nums[i];
+        while (list1 != null && list2 != null) {
+            if (list1.val <= list2.val) {
+                current.next = list1;
+                list1 = list1.next;
+            } else {
+                current.next = list2;
+                list2 = list2.next;
+            }
+            current = current.next;
         }
 
-        for (int i = 0; i < n; i++) {
-            int leftSum = nums[i] * i - (i > 0 ? prefix[i - 1] : 0);
-            int rightSum = (prefix[n - 1] - prefix[i]) 
-                           - nums[i] * (n - i - 1);
+        current.next = (list1 != null) ? list1 : list2;
 
-            result[i] = leftSum + rightSum;
-        }
-
-        return result;
+        return dummy.next;
     }
 }
